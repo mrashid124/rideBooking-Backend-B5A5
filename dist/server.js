@@ -1,0 +1,66 @@
+"use strict";
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+// import  express, { Request, Response } from "express";
+const mongoose_1 = __importDefault(require("mongoose"));
+const app_1 = __importDefault(require("./app"));
+// import { promise } from "zod";
+let server;
+const startServer = () => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        yield mongoose_1.default.connect("mongodb+srv://bookBorrower:jZM1SdouXKhoDtab@cluster0.9ekrxrn.mongodb.net/ride-booking?retryWrites=true&w=majority&appName=Cluster0");
+        console.log("Connected to DB");
+        server = app_1.default.listen(5000, () => {
+            console.log("Server is listing to port 5000");
+        });
+    }
+    catch (error) {
+        console.log(error);
+    }
+});
+startServer();
+process.on("SIGTERM", () => {
+    console.log("Signal Terminal Detected...Server Shutting down...");
+    if (server) {
+        server.close();
+        process.exit(1);
+    }
+    process.exit(1);
+});
+process.on("SIGINT", () => {
+    console.log("SIGINT Detected...Server Shutting down...");
+    if (server) {
+        server.close();
+        process.exit(1);
+    }
+    process.exit(1);
+});
+process.on("unhandledRejection", (err) => {
+    console.log("Unhandled Rejection Detected...Server Shutting down...", err);
+    if (server) {
+        server.close();
+        process.exit(1);
+    }
+    process.exit(1);
+});
+process.on("uncaughtException", (err) => {
+    console.log("UnCaught Exception Detected...Server Shutting down.", err);
+    if (server) {
+        server.close();
+        process.exit(1);
+    }
+    process.exit(1);
+});
+// Promise.reject(new Error("I forgot to catch this promise"))
+// throw new Error("I forgot to handle this local error")
