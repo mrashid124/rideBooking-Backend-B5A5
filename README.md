@@ -21,3 +21,15 @@ Output:
 
 User Login:
 http://localhost:5000/api/auth/login
+
+
+
+
+<!-- Use parseInt when using salt round
+In your bcrypt logic (e.g., in User Model or Auth Service):
+
+ts
+
+import { envVars } from '../config/env'; // adjust path accordingly
+const saltRounds = parseInt(envVars.BCRYPT_SALT_ROUND, 10);
+const hashedPassword = await bcrypt.hash(password, saltRounds); -->

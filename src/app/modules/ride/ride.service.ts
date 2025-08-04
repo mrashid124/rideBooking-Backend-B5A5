@@ -30,7 +30,8 @@ export const RideService = {
     if (ride.status !== 'requested') throw new Error('Cannot cancel after driver accepts');
 
     ride.status = 'cancelled';
-    ride.timestamps.set('cancelled', new Date());
+    // ride.timestamps.set('cancelled', new Date());
+    ride.timestamps['cancelled'] = new Date();
     await ride.save();
 
     return ride;
