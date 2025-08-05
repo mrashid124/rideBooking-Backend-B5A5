@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { User } from '../user/user.model';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
@@ -8,7 +9,7 @@ import { envVars } from '../../config/env';
 
 
 const createToken = (user: IUser) => {
-  return jwt.sign(
+  return (jwt as any).sign(
     { id: user._id, role: user.role },
     envVars.JWT.JWT_ACCESS_SECRET,
     { expiresIn: envVars.JWT.JWT_ACCESS_EXPIRES }

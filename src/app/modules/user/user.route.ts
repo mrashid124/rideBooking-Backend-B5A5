@@ -12,5 +12,8 @@ router.post(
 //   validateRequest(createUserZodSchema),
   UserController.createUser
 );
+// router.get(
+//   "/all-users", ()=>{}, 
+//   UserController.getAllUsers);
 
 export const UserRoutes = router;

@@ -1,3 +1,5 @@
+
+
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Request, Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
@@ -20,7 +22,8 @@ export const authenticate = (
     req.user = decoded;
     next();
   } catch (err) {
-    return res.status(403).json({ message: 'Invalid token' });
+     console.error('JWT verification failed:', err);
+    return res.status(403).json({ message: 'Invalid or expired token' });
   }
 };
 
@@ -32,3 +35,29 @@ export const authorize = (roles: string[]) => {
     next();
   };
 };
+
+
+
+
+// import { Request, Response, NextFunction } from 'express';
+// import jwt from 'jsonwebtoken';
+// import { envVars } from '../config/env';
+
+// export const auth = (req: Request, res: Response, next: NextFunction) => {
+//   try {
+//     const authHeader = req.headers.authorization;
+//     if (!authHeader || !authHeader.startsWith('Bearer ')) {
+//       return res.status(401).json({ message: 'Unauthorized: No token provided' });
+//     }
+
+//     const token = authHeader.split(' ')[1];
+//     const decoded = jwt.verify(token, envVars.JWT.JWT_ACCESS_SECRET);
+
+//     // @ts-ignore: attach user info to req
+//     req.user = decoded;
+//     next();
+//   } catch (_err) {
+//     // Using "_err" avoids the ESLint unused variable warning
+//     return res.status(401).json({ message: 'Unauthorized: Invalid or expired token' });
+//   }
+// };
