@@ -1,5 +1,4 @@
 
-
 import { Types } from "mongoose";
 
 export enum Role {
@@ -8,14 +7,20 @@ export enum Role {
   DRIVER = "DRIVER",
 }
 
+export enum ActiveStatus {
+  ACTIVE = "ACTIVE",
+  BLOCKED = "BLOCKED",
+}
+
 export interface IUser {
   _id?: Types.ObjectId;
   name: string;
   email: string;
   password: string;
   phone: string;
-  role: Role;
-  isBlocked?: boolean;
-  isApproved?: boolean; 
-  isAvailable?: boolean; 
+  role?: Role;
+  isActive?: ActiveStatus;
+  cancelAttempts?: number;
+  lastCancelDate?: Date;
+  driver?: Types.ObjectId;
 }
