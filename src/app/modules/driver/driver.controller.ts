@@ -2,6 +2,7 @@ import { NextFunction, Request, Response } from "express";
 import httpStatus from "http-status-codes";
 import catchAsync from "../../utils/catchAsync";
 import sendResponse from "../../utils/sendResponse";
+
 import { AvailabilityStatus } from "./driver.interface";
 import { DriverService } from "./driver.service";
 

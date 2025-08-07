@@ -14,10 +14,10 @@ interface EnvConfig {
     JWT_REFRESH_SECRET: string;
     JWT_REFRESH_EXPIRES: string;
   };
-//   OPEN_CASE_MAPS_API_KEY: string;
-//   PER_KM_RATE: string;
-//   CANCEL_WINDOW_TIME: string;
-//   GEO_LOCATION_API: string;
+  OPEN_CASE_MAPS_API_KEY: string;
+  PER_KM_RATE: string;
+  CANCEL_WINDOW_TIME: string;
+  GEO_LOCATION_API: string;
 }
 
 const loadEnvVariables = (): EnvConfig => {
@@ -30,10 +30,10 @@ const loadEnvVariables = (): EnvConfig => {
     "JWT_ACCESS_EXPIRES",
     "JWT_REFRESH_SECRET",
     "JWT_REFRESH_EXPIRES",
-    // "OPEN_CASE_MAPS_API_KEY",
-    // "PER_KM_RATE",
-    // "CANCEL_WINDOW_TIME",
-    // "GEO_LOCATION_API",
+    "OPEN_CASE_MAPS_API_KEY",
+    "PER_KM_RATE",
+    "CANCEL_WINDOW_TIME",
+    "GEO_LOCATION_API",
   ];
   requiredEnvVariables.forEach((key) => {
     if (!process.env[key]) {
@@ -42,7 +42,8 @@ const loadEnvVariables = (): EnvConfig => {
   });
   return {
     PORT: process.env.PORT as string,
-    DB_URL: process.env.DB_URL!,
+    // DB_URL: process.env.DB_URL!,
+      DB_URL: process.env.DB_URL as string,
     NODE_ENV: process.env.NODE_ENV as "development" | "production",
     BCRYPT_SALT_ROUND: process.env.BCRYPT_SALT_ROUND as string,
     JWT: {
@@ -51,10 +52,10 @@ const loadEnvVariables = (): EnvConfig => {
       JWT_REFRESH_SECRET: process.env.JWT_REFRESH_SECRET as string,
       JWT_REFRESH_EXPIRES: process.env.JWT_REFRESH_EXPIRES as string,
     },
-    // OPEN_CASE_MAPS_API_KEY: process.env.OPEN_CASE_MAPS_API_KEY as string,
-    // PER_KM_RATE: process.env.PER_KM_RATE as string,
-    // CANCEL_WINDOW_TIME: process.env.CANCEL_WINDOW_TIME as string,
-    // GEO_LOCATION_API: process.env.GEO_LOCATION_API as string,
+    OPEN_CASE_MAPS_API_KEY: process.env.OPEN_CASE_MAPS_API_KEY as string,
+    PER_KM_RATE: process.env.PER_KM_RATE as string,
+    CANCEL_WINDOW_TIME: process.env.CANCEL_WINDOW_TIME as string,
+    GEO_LOCATION_API: process.env.GEO_LOCATION_API as string,
   };
 };
 
@@ -64,9 +65,7 @@ export const envVars = loadEnvVariables();
 
 
 
-// import dotenv from 'dotenv';
 
-// dotenv.config();
 
 // export const envVars = {
 //   PORT: process.env.PORT!,

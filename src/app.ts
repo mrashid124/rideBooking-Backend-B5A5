@@ -10,6 +10,8 @@ import cookieParser from "cookie-parser";
 
 // import rideRoutes from './app/modules/ride/ride.route'
 import { router } from "./app/routes";
+import globalErrorHandler from "./app/middlewares/globalErrorHandler";
+import notFound from "./app/middlewares/notFound";
 
 
 // dotenv.config();
@@ -35,7 +37,7 @@ app.get("/", (req: Request, res: Response) => {
     })
 })
 
-// app.use(globalErrorHandler);
-// app.use(notFound);
+app.use(globalErrorHandler);
+app.use(notFound);
 
 export default app;
