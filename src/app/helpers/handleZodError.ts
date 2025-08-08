@@ -14,7 +14,7 @@ const handleZodError = (err: any): TGenericErrorResponse => {
   );
   return {
     statusCode: httpStatus.BAD_REQUEST,
-    message: "Zod Error",
+    message: "Zod Error!",
     errorSources,
   };
 };

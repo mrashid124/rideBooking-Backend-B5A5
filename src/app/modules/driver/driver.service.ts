@@ -1,7 +1,7 @@
 import httpStatus from "http-status-codes";
 import { Types } from "mongoose";
 import AppError from "../../errorHelpers/AppError";
-import { allowedStatuses, PartialRideStatus } from "../../utils/allowedStatus";
+import { currentStatuses, PartialRideStatus } from "../../utils/currentStatus";
 import { RideStatus } from "../ride/ride.interface";
 import { Ride } from "../ride/ride.model";
 import { ActiveStatus, Role } from "../user/user.interface";
@@ -113,7 +113,7 @@ const updateStatus = async (
 
   if (!ride) throw new Error("Ride not found or not assigned to you");
 
-  if (!allowedStatuses.includes(status)) {
+  if (!currentStatuses.includes(status)) {
     throw new AppError(httpStatus.BAD_REQUEST, "Invalid status update");
   }
   //sequential flow

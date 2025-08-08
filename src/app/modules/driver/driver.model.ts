@@ -1,5 +1,5 @@
 import { Schema, model } from "mongoose";
-import { getGeoLocation } from "../../utils/getGeoLocation";
+import { searchGeoLocation } from "../../utils/searchGeoLocation";
 import { vehicleSchema } from "../vehicle/vehicle.model";
 import { ApprovedStatus, AvailabilityStatus } from "./driver.interface";
 
@@ -43,7 +43,7 @@ driverSchema.pre("save", async function (next) {
       this.isModified("isApprovedStatus") &&
       this.isApprovedStatus === "APPROVED"
     ) {
-      const { location, lat, lng } = await getGeoLocation();
+      const { location, lat, lng } = await searchGeoLocation();
       this.currentLocation = { location, lat, lng };
     }
 

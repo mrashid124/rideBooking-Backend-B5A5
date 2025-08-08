@@ -8,7 +8,7 @@ const handleDuplicateError = (err: any): TGenericErrorResponse => {
 
   return {
     statusCode: httpStatus.BAD_REQUEST,
-    message: `${matchedArray} already exist!`,
+    message: `${matchedArray} , Already exist!`,
   };
 };
 

@@ -1,7 +1,8 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import axios from "axios";
 import { envVars } from "../config/env";
 
-export const getGeoLocation = async () => {
+export const searchGeoLocation = async () => {
   try {
     const response = await axios.get(envVars.GEO_LOCATION_API);
     if (response.data.success) {
@@ -11,7 +12,7 @@ export const getGeoLocation = async () => {
 
       return { location, lat, lng };
     } else {
-      throw new Error("Failed to get Geo Location");
+      throw new Error("Failed to search Geo Location");
     }
   } catch (error: any) {
     throw new Error(error);

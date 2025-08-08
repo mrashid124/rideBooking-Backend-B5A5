@@ -2,14 +2,13 @@ import { NextFunction, Request, Response } from "express";
 import httpStatus from "http-status-codes";
 import { JwtPayload } from "jsonwebtoken";
 
-import { UserService } from "./user.service";
 import catchAsync from "../../utils/catchAsync";
 import sendResponse from "../../utils/sendResponse";
+import { UserService } from "./user.service";
 
 const createUser = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     const result = await UserService.createUser(req.body);
-
     sendResponse(res, {
       statusCode: httpStatus.CREATED,
       success: true,
@@ -84,40 +83,3 @@ export const UserController = {
 };
 
 
-
-
-
-
-// import { Request, Response } from "express";
-// import { User } from "./user.model";
-
-// import httpStatus from "http-status-codes";
-
-
-// const createUser = async (req: Request, res: Response) => {
-
-//     try {
-//         const { name, email, phone, password, role} = req.body;
-//         const user = await User.create({
-//             name,
-//             email,
-//             phone,
-//             password,
-//             role
-//         })
-//         res.status(httpStatus.CREATED).json({
-//         message: "User Created Successfully",
-//         user
-//         })
-//     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-//     } catch (err: any) {
-//         console.log(err);
-//         res.status(httpStatus.BAD_REQUEST).json({
-//             message: `SOMETHING WENT WRONG !! ${err.message}`,
-//             err
-//         })
-//     }
-
-// }
-
-// export const UserController = { createUser };

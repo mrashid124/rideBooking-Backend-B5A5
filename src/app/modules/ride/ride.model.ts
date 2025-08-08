@@ -1,9 +1,10 @@
 
 import { Schema, model } from "mongoose";
 import { envVars } from "../../config/env";
-import { calculateDistanceInKm } from "../../utils/calculateDistanceInKm";
-import { getCoordinatesFromAddress } from "../../utils/getCoordinates";
+
+import { coordinatesFromAddress } from "../../utils/addressCoordinates";
 import { IRide, RideStatus } from "./ride.interface";
+import { distanceByKilo } from "../../utils/distanceByKilo";
 
 const locationSchema = {
   address: { type: String, required: true },
@@ -69,21 +70,21 @@ rideSchema.pre("save", async function (next) {
       ride.destinationLocation.address
     ) {
       // Get pickup coordinates
-      const pickupCoords = await getCoordinatesFromAddress(
+      const pickupCoords = await coordinatesFromAddress(
         ride.pickupLocation.address
       );
       ride.pickupLocation.lat = pickupCoords.lat;
       ride.pickupLocation.lng = pickupCoords.lng;
 
       // Get destination coordinates
-      const destinationCoords = await getCoordinatesFromAddress(
+      const destinationCoords = await coordinatesFromAddress(
         ride.destinationLocation.address
       );
       ride.destinationLocation.lat = destinationCoords.lat;
       ride.destinationLocation.lng = destinationCoords.lng;
 
       // Calculate distance and fare
-      const distanceKm = calculateDistanceInKm(pickupCoords, destinationCoords);
+      const distanceKm = distanceByKilo(pickupCoords, destinationCoords);
       const perKmRate = Number(envVars.PER_KM_RATE);
       ride.fare = Math.ceil(distanceKm * perKmRate);
     }
@@ -97,54 +98,3 @@ rideSchema.pre("save", async function (next) {
 export const Ride = model<IRide>("Ride", rideSchema);
 
 
-
-
-// import { Schema, model, Types } from 'mongoose';
-
-// export type RideStatus =
-//   | 'requested'
-//   | 'accepted'
-//   | 'picked_up'
-//   | 'in_transit'
-//   | 'completed'
-//   | 'cancelled';
-
-// export interface IRide {
-//   rider: Types.ObjectId;
-//   driver?: Types.ObjectId;
-//   pickupLocation: { lat: number; lng: number };
-//   destinationLocation: { lat: number; lng: number };
-//   status: RideStatus;
-//   timestamps: Record<string, Date>;
-// }
-
-// const rideSchema = new Schema<IRide>(
-//   {
-//     rider: { type: Schema.Types.ObjectId, ref: 'User', required: true },
-//     driver: { type: Schema.Types.ObjectId, ref: 'User' },
-//     pickupLocation: {
-//       lat: { type: Number, required: true },
-//       lng: { type: Number, required: true },
-//     },
-//     destinationLocation: {
-//       lat: { type: Number, required: true },
-//       lng: { type: Number, required: true },
-//     },
-//     status: {
-//       type: String,
-//       enum: [
-//         'requested',
-//         'accepted',
-//         'picked_up',
-//         'in_transit',
-//         'completed',
-//         'cancelled',
-//       ],
-//       default: 'requested',
-//     },
-//     timestamps: { type: Map, of: Date, default: {} },
-//   },
-//   { timestamps: true }
-// );
-
-// export const Ride = model<IRide>('Ride', rideSchema);

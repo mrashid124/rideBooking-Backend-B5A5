@@ -2,7 +2,7 @@ function deg2rad(deg: number): number {
   return deg * (Math.PI / 180);
 }
 
-export function calculateDistanceInKm(
+export function distanceByKilo(
   from: { lat: number; lng: number },
   to: { lat: number; lng: number }
 ): number {

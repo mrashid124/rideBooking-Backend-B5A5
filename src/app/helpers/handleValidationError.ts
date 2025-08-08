@@ -14,7 +14,7 @@ const handleValidationError = (err: any): TGenericErrorResponse => {
   );
   return {
     statusCode: httpStatus.BAD_REQUEST,
-    message: "Validation Error",
+    message: "Validation Error!",
     errorSources,
   };
 };

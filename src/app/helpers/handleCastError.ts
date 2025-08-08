@@ -9,7 +9,7 @@ const handleCastError = (
 ): TGenericErrorResponse => {
   return {
     statusCode: httpStatus.BAD_REQUEST,
-    message: "Invalid MongoDB ObjectID. Please provide a valid id",
+    message: "Please provide valid MongoDB ObjectID.",
   };
 };
 export default handleCastError;

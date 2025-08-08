@@ -1,7 +1,8 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import axios from "axios";
 import { envVars } from "../config/env";
 
-export const getCoordinatesFromAddress = async (address: string) => {
+export const coordinatesFromAddress = async (address: string) => {
   try {
     const apiKey = envVars.OPEN_CASE_MAPS_API_KEY;
     const encodedAddress = encodeURIComponent(address);

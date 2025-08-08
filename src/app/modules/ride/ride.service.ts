@@ -3,7 +3,7 @@ import httpStatus from "http-status-codes";
 import { JwtPayload } from "jsonwebtoken";
 import { envVars } from "../../config/env";
 import AppError from "../../errorHelpers/AppError";
-import { getCoordinatesFromAddress } from "../../utils/getCoordinates";
+import { coordinatesFromAddress } from "../../utils/addressCoordinates";
 import { ActiveStatus, Role } from "../user/user.interface";
 import { User } from "../user/user.model";
 import { IRide, RideStatus } from "./ride.interface";
@@ -12,8 +12,8 @@ import { Ride } from "./ride.model";
 const requestRide = async (riderId: string, payload: IRide) => {
   const pickupAddress = payload.pickupLocation.address;
   const destinationAddress = payload.destinationLocation.address;
-  const pickupCoords = await getCoordinatesFromAddress(pickupAddress);
-  const destinationCoords = await getCoordinatesFromAddress(destinationAddress);
+  const pickupCoords = await coordinatesFromAddress(pickupAddress);
+  const destinationCoords = await coordinatesFromAddress(destinationAddress);
   const newRiderData = {
     rider: riderId,
     pickupLocation: {
@@ -158,7 +158,7 @@ const ridesAvailable = async () => {
   const rides = await Ride.find({ status: RideStatus.REQUESTED });
 
   if (rides.length < 1) {
-    throw new AppError(httpStatus.NOT_FOUND, "Rides is not available now");
+    throw new AppError(httpStatus.NOT_FOUND, "Ride is not available.");
   }
 
   return rides;
