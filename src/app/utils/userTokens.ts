@@ -32,7 +32,7 @@ export const createUserTokens = (user: Partial<IUser>) => {
   };
 };
 
-export const createNewAccessTokenWithRefreshToken = async (
+export const createTokenByRefreshToken = async (
   refreshToken: string
 ) => {
   const verifiedRefreshToken = verifyToken(

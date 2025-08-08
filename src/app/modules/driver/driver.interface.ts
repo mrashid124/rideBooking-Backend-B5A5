@@ -1,11 +1,15 @@
 import { Types } from "mongoose";
 import { IVehicle } from "../vehicle/vehicle.interface";
 
+
+
+
 export enum ApprovedStatus {
   PENDING = "PENDING",
   APPROVED = "APPROVED",
   SUSPENDED = "SUSPENDED",
 }
+
 
 export enum AvailabilityStatus {
   AVAILABLE = "AVAILABLE",
@@ -17,6 +21,9 @@ export interface ILocation {
   lat: number;
   lng: number;
 }
+
+
+
 
 export interface IDriver {
   user: Types.ObjectId;
