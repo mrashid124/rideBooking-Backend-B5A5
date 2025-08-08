@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { NextFunction, Request, Response } from "express";
 import httpStatus from "http-status-codes";
 import { JwtPayload } from "jsonwebtoken";
@@ -12,7 +13,7 @@ const createUser = catchAsync(
     sendResponse(res, {
       statusCode: httpStatus.CREATED,
       success: true,
-      message: "User Created Successfully!",
+      message: "User created successfully!",
       data: result,
     });
   }
@@ -24,7 +25,7 @@ const getAllRiders = catchAsync(
     sendResponse(res, {
       statusCode: httpStatus.OK,
       success: true,
-      message: "All Riders Retrieved Successfully!",
+      message: "Riders retrieved successfully!",
       data: {
         users: result.data,
         meta: result.meta,
@@ -50,7 +51,7 @@ const updateUser = catchAsync(
     sendResponse(res, {
       statusCode: httpStatus.OK,
       success: true,
-      message: "User Updated Successfully!",
+      message: "User updated successfully!",
       data: result,
     });
   }
@@ -69,7 +70,7 @@ const blockedUser = catchAsync(
     sendResponse(res, {
       statusCode: httpStatus.OK,
       success: true,
-      message: "User Updated Successfully!",
+      message: "User updated successfully!",
       data: result,
     });
   }

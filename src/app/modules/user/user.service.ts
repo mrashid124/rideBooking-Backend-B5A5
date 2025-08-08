@@ -3,9 +3,10 @@ import bcryptjs from "bcryptjs";
 import httpStatus from "http-status-codes";
 import { JwtPayload } from "jsonwebtoken";
 import { envVars } from "../../config/env";
-import AppError from "../../errorHelpers/AppError";
+import AppError from "../../errorHelpers/appError";
 import { ActiveStatus, IUser, Role } from "./user.interface";
 import { User } from "./user.model";
+
 
 
 const createUser = async (payload: IUser) => {
@@ -13,7 +14,7 @@ const createUser = async (payload: IUser) => {
 
   const isUserExist = await User.findOne({ email });
   if (isUserExist) {
-    throw new AppError(httpStatus.BAD_REQUEST, "User Already Exist!");
+    throw new AppError(httpStatus.BAD_REQUEST, "User already exist!");
   }
 
   const hashedPassword = await bcryptjs.hash(
@@ -47,17 +48,17 @@ const updateUser = async (
 ) => {
   const isExistUser = await User.findById(userId);
   if (!isExistUser) {
-    throw new AppError(httpStatus.NOT_FOUND, "User doesn't found!");
+    throw new AppError(httpStatus.NOT_FOUND, "User not found!");
   }
 
-  // 1. Check if trying to update someone else's data
+
   const isSelf = decodedToken.userId === userId;
 
   if (!isSelf) {
     if (decodedToken.role === Role.RIDER || decodedToken.role === Role.DRIVER) {
       throw new AppError(
         httpStatus.FORBIDDEN,
-        "You are not authorized to update other users' data!"
+        "You are not authorized to update!"
       );
     }
 
@@ -69,13 +70,13 @@ const updateUser = async (
     }
   }
 
-  // 2. If trying to change role
+
   if (payload.role) {
     if (decodedToken.role === Role.RIDER || decodedToken.role === Role.DRIVER) {
       if (payload.role === Role.ADMIN) {
         throw new AppError(
           httpStatus.FORBIDDEN,
-          "You are not authorized to change admin roles!"
+          "You are not authorized to change!"
         );
       }
     }
@@ -99,13 +100,13 @@ const updateUser = async (
 const blockedUser = async (userId: string, decodedToken: JwtPayload) => {
   const isExistUser = await User.findById(userId);
   if (!isExistUser) {
-    throw new AppError(httpStatus.NOT_FOUND, "User doesn't found!");
+    throw new AppError(httpStatus.NOT_FOUND, "User not found!");
   }
 
   if (decodedToken.role === Role.RIDER || decodedToken.role === Role.DRIVER) {
     throw new AppError(
       httpStatus.FORBIDDEN,
-      "You are not authorized to view this route."
+      "You are not authorized."
     );
   }
 

@@ -7,9 +7,10 @@ import { Role } from "../user/user.interface";
 import { RideController } from "./ride.controller";
 import { createRideZodSchema } from "./ride.validation";
 
+
+// const router = express.Router();
 const router = Router();
 
-/*--------------- Rider Routes Method -------------------*/
 router.post(
   "/request",
   checkAuth(Role.RIDER),
@@ -32,7 +33,7 @@ router.get(
 router.get("/:id", checkAuth(Role.RIDER), RideController.getRiderSingleRide);
 router.patch("/:id/cancel", checkAuth(Role.RIDER), RideController.cancelRide);
 
-/*--------------- Driver Routes Method -------------------*/
+
 
 router.patch(
   "/:id/accept",
@@ -53,32 +54,7 @@ router.patch(
 export const RideRoutes = router;
 
 
-// import express from 'express';
-// import { RideController } from './ride.controller';
-// import { authenticate, authorize } from '../../middlewares/auth';
 
-// const router = express.Router();
+
 
 // // Only rider can use these endpoints
-// router.post(
-//   '/request',
-//   authenticate,
-//   authorize(['rider']),
-//   RideController.requestRide
-// );
-
-// router.patch(
-//   '/cancel/:id',
-//   authenticate,
-//   authorize(['rider']),
-//   RideController.cancelRide
-// );
-
-// router.get(
-//   '/my-rides',
-//   authenticate,
-//   authorize(['rider']),
-//   RideController.rideHistory
-// );
-
-// export default router;

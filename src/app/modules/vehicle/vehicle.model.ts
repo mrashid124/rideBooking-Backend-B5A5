@@ -11,13 +11,12 @@ export const vehicleSchema = new Schema(
     model: {
       type: String,
       default: "Unknown",
-      //   required: true,
+    
     },
     licensePlate: {
       type: String,
       default: "N/A",
-      //   required: true,
-      //   unique: true,
+   
     },
     color: {
       type: String,

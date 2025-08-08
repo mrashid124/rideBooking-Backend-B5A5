@@ -27,19 +27,3 @@ export const UserRoutes = router;
 
 
 
-
-
-// import { Router } from "express";
-
-// import { UserController } from "./user.controller";
-
-// const router = Router();
-
-// router.post(
-//   "/register",
-// //   validateRequest(createUserZodSchema),
-//   UserController.createUser
-// );
-
-
-// export const UserRoutes = router;

@@ -1,5 +1,6 @@
 import { Types } from "mongoose";
 
+
 export enum RideStatus {
   REQUESTED = "REQUESTED",
   ACCEPTED = "ACCEPTED",
@@ -10,16 +11,19 @@ export enum RideStatus {
   REJECTED = "REJECTED",
 }
 
+
 export interface ILocation {
   address: string;
   lat: number;
   lng: number;
 }
 
+
 export interface IStatusHistory {
   status: RideStatus;
   timestamp: Date;
 }
+
 
 export interface IRide {
   rider: Types.ObjectId;

@@ -2,12 +2,13 @@
 import httpStatus from "http-status-codes";
 import { JwtPayload } from "jsonwebtoken";
 import { envVars } from "../../config/env";
-import AppError from "../../errorHelpers/AppError";
+import AppError from "../../errorHelpers/appError";
 import { coordinatesFromAddress } from "../../utils/addressCoordinates";
 import { ActiveStatus, Role } from "../user/user.interface";
 import { User } from "../user/user.model";
 import { IRide, RideStatus } from "./ride.interface";
 import { Ride } from "./ride.model";
+
 
 const requestRide = async (riderId: string, payload: IRide) => {
   const pickupAddress = payload.pickupLocation.address;
@@ -47,7 +48,7 @@ const getRiderSingleRide = async (rideId: string, decodedToken: JwtPayload) => {
   const ride = await Ride.findOne({ _id: rideId, rider: riderId });
 
   if (!ride) {
-    throw new AppError(httpStatus.NOT_FOUND, "Ride doesn't found!");
+    throw new AppError(httpStatus.NOT_FOUND, "Ride not found!");
   }
 
   const isSelf = riderId === ride.rider.toString();
@@ -56,7 +57,7 @@ const getRiderSingleRide = async (rideId: string, decodedToken: JwtPayload) => {
     if (decodedToken.role === Role.RIDER || decodedToken.role === Role.DRIVER) {
       throw new AppError(
         httpStatus.FORBIDDEN,
-        "You are not authorized to view other user rides"
+        "You are not authorized."
       );
     }
   }
@@ -71,7 +72,7 @@ const cancelRide = async (rideId: string, userId: string) => {
     if (ride.status !== RideStatus.REQUESTED) {
       throw new AppError(
         httpStatus.BAD_REQUEST,
-        `Cannot cancel this ride now, because ride status is ${ride.status}`
+        `You can not cancel this ride, ride status: ${ride.status}`
       );
     }
   }
@@ -81,10 +82,10 @@ const cancelRide = async (rideId: string, userId: string) => {
   if (user.isActive === ActiveStatus.BLOCKED)
     throw new AppError(
       httpStatus.BAD_REQUEST,
-      "Your are temporary Blocked by unnecessary cancel attempts"
+      "Your are temporary blocked for unnecessary attempts."
     );
 
-  // Calculate time difference in minutes
+ 
   const requestedAt = ride.history.find(
     (entry) => entry.status === RideStatus.REQUESTED
   );
@@ -105,7 +106,7 @@ const cancelRide = async (rideId: string, userId: string) => {
 
   const today = now.toDateString();
   const lastCancel = user.lastCancelDate?.toDateString();
-  // reset counter if it's a new day
+ 
   if (lastCancel !== today) {
     user.cancelAttempts = 1;
     user.lastCancelDate = now;
@@ -115,7 +116,7 @@ const cancelRide = async (rideId: string, userId: string) => {
     }
   }
 
-  // block user if cancel limit exceeds
+ 
   if (user.cancelAttempts && user.cancelAttempts > 3) {
     user.isActive = ActiveStatus.BLOCKED;
   }
@@ -142,7 +143,7 @@ const getAllRides = async () => {
 
 const getAllRidesHistory = async () => {
   const rides = await Ride.find()
-    .select("rider driver status fare history")
+    .select("Rider driver status fare history")
     .populate("rider", "name email phone")
     .populate("driver", "name email phone");
   const totalRides = await Ride.countDocuments();
@@ -177,7 +178,7 @@ const getAllCompletedRides = async (driverId: string) => {
   if (rides.length < 1) {
     throw new AppError(
       httpStatus.NOT_FOUND,
-      "Rides is not found with Completed History"
+      "Ride is not found."
     );
   }
 
@@ -200,47 +201,3 @@ export const RideService = {
   getAllCompletedRides,
 };
 
-
-// import { Ride } from './ride.model';
-// import { Types } from 'mongoose';
-
-// export const RideService = {
-//   requestRide: async (
-//     riderId: Types.ObjectId,
-//     pickup: { lat: number; lng: number },
-//     destination: { lat: number; lng: number }
-//   ) => {
-//     const existingActiveRide = await Ride.findOne({
-//       rider: riderId,
-//       status: { $in: ['requested', 'accepted', 'picked_up', 'in_transit'] },
-//     });
-//     if (existingActiveRide) throw new Error('You already have an active ride.');
-
-//     const newRide = await Ride.create({
-//       rider: riderId,
-//       pickupLocation: pickup,
-//       destinationLocation: destination,
-//       timestamps: { requested: new Date() },
-//     });
-
-//     return newRide;
-//   },
-
-//   cancelRide: async (riderId: Types.ObjectId, rideId: string) => {
-//     const ride = await Ride.findById(rideId);
-//     if (!ride) throw new Error('Ride not found');
-//     if (!ride.rider.equals(riderId)) throw new Error('Unauthorized');
-//     if (ride.status !== 'requested') throw new Error('Cannot cancel after driver accepts');
-
-//     ride.status = 'cancelled';
-//     // ride.timestamps.set('cancelled', new Date());
-//     ride.timestamps['cancelled'] = new Date();
-//     await ride.save();
-
-//     return ride;
-//   },
-
-//   getRiderHistory: async (riderId: Types.ObjectId) => {
-//     return Ride.find({ rider: riderId }).sort({ createdAt: -1 });
-//   },
-// };

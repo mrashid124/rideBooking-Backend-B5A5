@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 
 import { NextFunction, Request, Response } from "express";
 import httpStatus from "http-status-codes";
@@ -25,7 +26,7 @@ const getRiderAllRides = catchAsync(
     sendResponse(res, {
       statusCode: httpStatus.OK,
       success: true,
-      message: "All Rides Retrieved Successfully!",
+      message: "All Rides retrieved successfully!",
       data: result.data,
       meta: result.meta,
     });
@@ -46,7 +47,7 @@ const getRiderSingleRide = catchAsync(
     sendResponse(res, {
       statusCode: httpStatus.OK,
       success: true,
-      message: "Ride Retrieved Successfully!",
+      message: "Ride retrieved successfully!",
       data: result,
     });
   }
@@ -61,7 +62,7 @@ const cancelRide = catchAsync(
     sendResponse(res, {
       statusCode: httpStatus.OK,
       success: true,
-      message: "Ride Cancelled",
+      message: "Ride cancelled",
       data: result,
     });
   }
@@ -73,7 +74,7 @@ const getAllRides = catchAsync(
     sendResponse(res, {
       statusCode: httpStatus.OK,
       success: true,
-      message: "All Rides Retrieved Successfully!",
+      message: "All Rides retrieved successfully!",
       data: {
         rides: result.data,
         meta: result.meta,
@@ -88,7 +89,7 @@ const getAllRidesHistory = catchAsync(
     sendResponse(res, {
       statusCode: httpStatus.OK,
       success: true,
-      message: "All Rides History Retrieved Successfully!",
+      message: "All rides history retrieved successfully!",
       data: {
         rides: result.data,
         meta: result.meta,
@@ -118,7 +119,7 @@ const getAllCompletedRides = catchAsync(
     sendResponse(res, {
       statusCode: httpStatus.OK,
       success: true,
-      message: "All Completed Rides Retrieved Successfully",
+      message: "All completed rides retrieved successfully",
       data: {
         rides: result.data,
         meta: result.meta,
@@ -138,43 +139,3 @@ export const RideController = {
   getAllCompletedRides,
 };
 
-
-
-// /* eslint-disable @typescript-eslint/no-explicit-any */
-// import { Request, Response } from 'express';
-// import { RideService } from './ride.service';
-// import { AuthRequest } from '../../middlewares/auth';
-
-// export const RideController = {
-//   requestRide: async (req: AuthRequest, res: Response) => {
-//     try {
-//       const { pickupLocation, destinationLocation } = req.body;
-//       const ride = await RideService.requestRide(
-//         req.user.id,
-//         pickupLocation,
-//         destinationLocation
-//       );
-//       res.status(201).json(ride);
-//     } catch (err: any) {
-//       res.status(400).json({ message: err.message });
-//     }
-//   },
-
-//   cancelRide: async (req: AuthRequest, res: Response) => {
-//     try {
-//       const ride = await RideService.cancelRide(req.user.id, req.params.id);
-//       res.status(200).json(ride);
-//     } catch (err: any) {
-//       res.status(400).json({ message: err.message });
-//     }
-//   },
-
-//   rideHistory: async (req: AuthRequest, res: Response) => {
-//     try {
-//       const history = await RideService.getRiderHistory(req.user.id);
-//       res.status(200).json(history);
-//     } catch (err: any) {
-//       res.status(400).json({ message: err.message });
-//     }
-//   },
-// };

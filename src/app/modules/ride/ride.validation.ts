@@ -2,9 +2,13 @@ import { z } from "zod";
 
 export const createRideZodSchema = z.object({
   pickupLocation: z.object({
-    address: z.string({ invalid_type_error: "Address must be string" }),
+    lat: z.number(),
+    lng: z.number(),
+    address: z.string().min(3, "Pickup address is required, it's must be string"),
   }),
   destinationLocation: z.object({
-    address: z.string({ invalid_type_error: "Address must be string" }),
+    lat: z.number(),
+    lng: z.number(),
+    address: z.string().min(3, "Destination address is required, it's must be string"),
   }),
 });

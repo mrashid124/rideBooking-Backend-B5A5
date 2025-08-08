@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 
 import { model, Schema } from "mongoose";
 import { Driver } from "../driver/driver.model";
@@ -42,22 +43,7 @@ const userSchema = new Schema<IUser>(
   { timestamps: true, versionKey: false }
 );
 
-// // create Rider Model at the time of Creating User Model because user role by default rider
-// userSchema.post("save", async function (doc, next) {
-//   try {
-//     if (doc.role === Role.RIDER) {
-//       const existingRider = await Rider.findOne({ user: doc._id });
-//       if (!existingRider) {
-//         await Rider.create({ user: doc._id });
-//       }
-//     }
-//     next();
-//   } catch (error: any) {
-//     next(error);
-//   }
-// });
 
-// change role from rider to driver this hook will work
 userSchema.post("findOneAndUpdate", async function (doc, next) {
   try {
     if (doc?.role === Role.DRIVER) {
@@ -76,29 +62,7 @@ userSchema.post("findOneAndUpdate", async function (doc, next) {
   }
 });
 
-// // change role from driver to rider then this hook will work
-// userSchema.post("findOneAndUpdate", async function (doc, next) {
-//   try {
-//     if (doc?.role === Role.RIDER) {
-//       const existingRider = await Rider.findOne({ user: doc._id });
 
-//       if (!existingRider) {
-//         await Rider.create({
-//           user: doc._id,
-//         });
-//         await Driver.findOneAndDelete({
-//           user: doc._id,
-//         });
-//       }
-//     }
-
-//     next();
-//   } catch (error: any) {
-//     next(error);
-//   }
-// });
-
-// change role from RIDER or DRIVER to ADMIN then this hook will work
 userSchema.post("findOneAndUpdate", async function (doc, next) {
   try {
     if (doc?.role === Role.ADMIN) {
@@ -114,51 +78,6 @@ userSchema.post("findOneAndUpdate", async function (doc, next) {
 });
 
 export const User = model<IUser>("User", userSchema);
-
-
-
-
-
-
-// import { model, Schema } from "mongoose";
-// import bcrypt from 'bcrypt';
-
-// export type UserRole = 'admin' | 'rider' | 'driver';
-
-// export interface IUser {
-//     _id: string;
-//     name: string;
-//     email: string;
-//     phone: string;
-//     password: string;
-//     role: UserRole;
-//     isBlocked?: boolean;
-//     isApproved?: boolean; // for drivers
-// }
-
-// const userSchema = new Schema<IUser>(
-//     {
-//         name: { type: String, required: true },
-//         email: { type: String, required: true, unique: true },
-//         phone: { type: String, unique: true },
-//         password: { type: String, required: true, select: false },
-//         role: { type: String, enum: ['admin', 'rider', 'driver'], required: true },
-//         isBlocked: { type: Boolean, default: false },
-//         isApproved: { type: Boolean, default: false }, // for driver only
-//     },
-//     { timestamps: true }
-// );
-
-// // Hash password 
-// userSchema.pre('save', async function (next) {
-//     if (!this.isModified('password')) return next();
-//     this.password = await bcrypt.hash(this.password, 10);
-//     next();
-// });
-
-// export const User = model<IUser>('User', userSchema);
-
-
 
 
 

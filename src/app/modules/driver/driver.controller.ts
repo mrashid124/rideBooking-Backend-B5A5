@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { NextFunction, Request, Response } from "express";
 import httpStatus from "http-status-codes";
 import catchAsync from "../../utils/catchAsync";
@@ -16,7 +17,7 @@ const acceptRide = catchAsync(
     sendResponse(res, {
       statusCode: httpStatus.OK,
       success: true,
-      message: "Ride Accepted",
+      message: "Ride is accepted",
       data: result,
     });
   }
@@ -31,7 +32,7 @@ const rejectRide = catchAsync(
     sendResponse(res, {
       statusCode: httpStatus.OK,
       success: true,
-      message: "Ride Rejected",
+      message: "Ride is rejected",
       data: result,
     });
   }
@@ -99,7 +100,7 @@ const getAllDrivers = catchAsync(
     sendResponse(res, {
       statusCode: httpStatus.OK,
       success: true,
-      message: "All Drivers Retrieved Successfully!",
+      message: "Drivers retrieved successfully!",
       data: {
         drivers: result.data,
         meta: result.meta,

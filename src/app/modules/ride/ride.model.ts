@@ -1,10 +1,10 @@
 
 import { Schema, model } from "mongoose";
 import { envVars } from "../../config/env";
-
+import { distanceByKilo } from "../../utils/distanceByKilo";
 import { coordinatesFromAddress } from "../../utils/addressCoordinates";
 import { IRide, RideStatus } from "./ride.interface";
-import { distanceByKilo } from "../../utils/distanceByKilo";
+
 
 const locationSchema = {
   address: { type: String, required: true },
@@ -46,7 +46,7 @@ const rideSchema = new Schema<IRide>(
   }
 );
 
-// by default history set
+
 rideSchema.pre("save", function (next) {
   if (this.isNew && (!this.history || this.history.length === 0)) {
     this.history = [
@@ -59,7 +59,7 @@ rideSchema.pre("save", function (next) {
   next();
 });
 
-//fare calculate
+
 rideSchema.pre("save", async function (next) {
   try {
     const ride = this;
@@ -69,7 +69,7 @@ rideSchema.pre("save", async function (next) {
       ride.pickupLocation.address &&
       ride.destinationLocation.address
     ) {
-      // Get pickup coordinates
+   
       const pickupCoords = await coordinatesFromAddress(
         ride.pickupLocation.address
       );
@@ -90,6 +90,7 @@ rideSchema.pre("save", async function (next) {
     }
 
     next();
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (error: any) {
     next(error);
   }

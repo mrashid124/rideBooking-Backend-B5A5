@@ -1,7 +1,8 @@
 import { Schema, model } from "mongoose";
 import { searchGeoLocation } from "../../utils/searchGeoLocation";
-import { vehicleSchema } from "../vehicle/vehicle.model";
+
 import { ApprovedStatus, AvailabilityStatus } from "./driver.interface";
+import { vehicleSchema } from "../vehicle/vehicle.model";
 
 const locationSchema = new Schema(
   {
@@ -36,7 +37,7 @@ const driverSchema = new Schema(
   { timestamps: true, versionKey: false }
 );
 
-// Pre-save Hook to set default location for driver
+
 driverSchema.pre("save", async function (next) {
   try {
     if (
@@ -48,6 +49,7 @@ driverSchema.pre("save", async function (next) {
     }
 
     next();
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (error: any) {
     next(error);
   }

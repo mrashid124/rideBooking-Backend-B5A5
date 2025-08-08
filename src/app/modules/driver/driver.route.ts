@@ -5,6 +5,8 @@ import { DriverController } from "./driver.controller";
 
 const router = Router();
 
+
+
 router.get("/", checkAuth(Role.ADMIN), DriverController.getAllDrivers);
 
 router.get(
@@ -13,17 +15,20 @@ router.get(
   DriverController.availableDriver
 );
 
+
 router.get(
   "/earnings",
   checkAuth(Role.DRIVER),
   DriverController.driverEarnings
 );
 
+
 router.patch(
   "/availability",
   checkAuth(Role.DRIVER),
   DriverController.setAvailability
 );
+
 
 router.patch(
   "/approve/:id",
@@ -36,5 +41,4 @@ router.patch(
   checkAuth(Role.ADMIN),
   DriverController.suspendDriver
 );
-
 export const DriverRoutes = router;

@@ -1,13 +1,14 @@
 import httpStatus from "http-status-codes";
 import { Types } from "mongoose";
-import AppError from "../../errorHelpers/AppError";
-import { currentStatuses, PartialRideStatus } from "../../utils/currentStatus";
+
 import { RideStatus } from "../ride/ride.interface";
 import { Ride } from "../ride/ride.model";
 import { ActiveStatus, Role } from "../user/user.interface";
 import { User } from "../user/user.model";
 import { ApprovedStatus, AvailabilityStatus } from "./driver.interface";
 import { Driver } from "./driver.model";
+import AppError from "../../errorHelpers/appError";
+import { currentStatuses, PartialRideStatus } from "../../utils/currentStatus";
 
 const acceptRide = async (rideId: string, driverId: string) => {
   const ride = await Ride.findById(rideId);
@@ -16,7 +17,7 @@ const acceptRide = async (rideId: string, driverId: string) => {
     if (ride.status !== RideStatus.REQUESTED) {
       throw new AppError(
         httpStatus.BAD_REQUEST,
-        "Ride already accepted or not available"
+        "Ride already accepted or Not available"
       );
     }
   }
@@ -61,7 +62,7 @@ const rejectRide = async (rideId: string, driverId: string) => {
   if (user.isActive === ActiveStatus.BLOCKED)
     throw new AppError(
       httpStatus.BAD_REQUEST,
-      "Your are temporary Blocked by unnecessary REJECT attempts, please contact with admin"
+      "Your are temporary Blocked, Please contact admin"
     );
 
   const driver = await Driver.findOne({ user: driverId });
@@ -75,7 +76,7 @@ const rejectRide = async (rideId: string, driverId: string) => {
   const now = new Date();
   const today = now.toDateString();
   const lastCancel = user.lastCancelDate?.toDateString();
-  // reset counter if it's a new day
+ 
   if (lastCancel !== today) {
     user.cancelAttempts = 1;
     user.lastCancelDate = now;
@@ -85,7 +86,7 @@ const rejectRide = async (rideId: string, driverId: string) => {
     }
   }
 
-  // block user if cancel limit exceeds
+  
   if (user.cancelAttempts && user.cancelAttempts > 3) {
     user.isActive = ActiveStatus.BLOCKED;
   }
@@ -111,12 +112,12 @@ const updateStatus = async (
   const ride = await Ride.findOne({ _id: rideId, driver: driverObjId });
   const driver = await Driver.findOne({ user: driverId });
 
-  if (!ride) throw new Error("Ride not found or not assigned to you");
+  if (!ride) throw new Error("Ride not found or Not assigned to you");
 
   if (!currentStatuses.includes(status)) {
     throw new AppError(httpStatus.BAD_REQUEST, "Invalid status update");
   }
-  //sequential flow
+
   const currentStatus = ride.status;
   const validTransitions: Partial<Record<RideStatus, RideStatus>> = {
     [RideStatus.ACCEPTED]: RideStatus.PICKED_UP,
@@ -130,7 +131,7 @@ const updateStatus = async (
     );
   }
 
-  // Set new status and timestamp
+
   ride.status = status;
 
   const now = new Date();
@@ -241,7 +242,7 @@ const availableDriver = async () => {
   if (drivers.length < 1)
     throw new AppError(
       httpStatus.NOT_FOUND,
-      "No Drivers Available now, please wait a while minute"
+      "No Drivers Available now, Please try again later"
     );
 
   return drivers;
