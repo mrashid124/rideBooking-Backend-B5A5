@@ -23,7 +23,7 @@ export const createUserZodSchema = z.object({
     .regex(/^(?=.*\d)/, {
       message: "Password must contain at least 1 number.",
     }),
-  role: z.enum(Object.values(Role).filter((role) => role !== "admin") as [string]).optional(),
+  role: z.enum(Object.values(Role).filter((role) => role !== "ADMIN") as [string]).optional(),
 });
 
 export const updateUserZodSchema = z.object({

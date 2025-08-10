@@ -15,14 +15,15 @@ Object.defineProperty(exports, "__esModule", { value: true });
 // import  express, { Request, Response } from "express";
 const mongoose_1 = __importDefault(require("mongoose"));
 const app_1 = __importDefault(require("./app"));
+const env_1 = require("./app/config/env");
 // import { promise } from "zod";
 let server;
 const startServer = () => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        yield mongoose_1.default.connect("mongodb+srv://bookBorrower:jZM1SdouXKhoDtab@cluster0.9ekrxrn.mongodb.net/ride-booking?retryWrites=true&w=majority&appName=Cluster0");
+        yield mongoose_1.default.connect(env_1.envVars.DB_URL);
         console.log("Connected to DB");
-        server = app_1.default.listen(5000, () => {
-            console.log("Server is listing to port 5000");
+        server = app_1.default.listen(env_1.envVars.PORT, () => {
+            console.log(`Server is listening to port ${env_1.envVars.PORT}`);
         });
     }
     catch (error) {
@@ -55,7 +56,7 @@ process.on("unhandledRejection", (err) => {
     process.exit(1);
 });
 process.on("uncaughtException", (err) => {
-    console.log("UnCaught Exception Detected...Server Shutting down.", err);
+    console.log("UnCaught Exception Detected...Server Shutting down...", err);
     if (server) {
         server.close();
         process.exit(1);

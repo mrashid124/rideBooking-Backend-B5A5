@@ -62,7 +62,7 @@ rideSchema.pre("save", function (next) {
 
 rideSchema.pre("save", async function (next) {
   try {
-    const ride = this;
+    const ride = this as IRide;
 
     if (
       !ride.fare &&

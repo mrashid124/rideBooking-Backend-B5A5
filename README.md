@@ -1,4 +1,78 @@
+# 🚖 Ride Booking API
 
+A **secure** and **scalable** backend service for a ride booking platform (think Uber, Pathao, or Lyft).  
+Built with **Node.js**, **Express**, and **TypeScript**, this API supports **role-based authentication**, **real-time ride management**, and **driver earnings tracking**.
+
+---
+
+## 📌 Overview
+
+The Ride Booking API is a **feature-rich backend** to manage **Riders**, **Drivers**, and **Admins** with strict security and high performance.  
+It’s designed for **real-world ride-hailing apps** where reliability and data protection are critical.
+
+---
+
+## ✨ Key Features
+
+- 🔐 **Role-Based Authentication** — Supports **RIDER**, **DRIVER**, and **ADMIN** roles
+- 🔑 **JWT Authentication** for secure access to protected endpoints
+- 🚗 **Ride Lifecycle** — Request, accept, reject, cancel, complete rides
+- 📍 **Geo Location Matching** — GeoJSON + Haversine formula for nearby driver search
+- 💰 **Driver Earnings & History** — Summaries of completed rides
+- 🛡 **Robust Data Validation** — Zod for request validation
+- 🔒 **Password Security** — bcrypt hashing for stored passwords
+- ⚡ Structured error handling with custom exceptions
+
+---
+
+## 🛠 Tech Stack
+
+| Layer          | Technology |
+|----------------|------------|
+| **Language**   | TypeScript |
+| **Framework**  | Express.js |
+| **Database**   | MongoDB + Mongoose |
+| **Auth**       | JWT |
+| **Validation** | Zod |
+| **Security**   | bcrypt |
+
+---
+
+## ⚙️ Setup & Installation
+
+1. **Clone the repository**
+   ```bash
+   git clone https://github.com/your-username/ride-booking-api.git
+   cd ride-booking-api
+
+
+### Configure environment variables in .env
+See .env.example
+
+ Run the Development Server
+### Start in development mode
+npm run dev
+
+
+### Build for Production
+npm run build
+npm start
+
+## Testing & Documentation
+✔ Use Postman to test all endpoints
+✔ Include Authorization: Bearer <token> for protected routes
+✔ Import Postman collection (if available)
+
+
+## 🌐 Live API  
+**Base URL:**  
+https://ride-booking-backend-b5-a5.vercel.app/
+
+
+
+
+
+<!-- 
 
 User register:
 http://localhost:5000/api/v1/users/register
@@ -74,14 +148,4 @@ Output:
     }
 }
 
-
-
-
-<!-- Use parseInt when using salt round
-In your bcrypt logic (e.g., in User Model or Auth Service):
-
-ts
-
-import { envVars } from '../config/env'; // adjust path accordingly
-const saltRounds = parseInt(envVars.BCRYPT_SALT_ROUND, 10);
-const hashedPassword = await bcrypt.hash(password, saltRounds); -->
+ -->

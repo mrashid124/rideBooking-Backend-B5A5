@@ -1,12 +1,10 @@
-
+"use strict";
 // /* eslint-disable @typescript-eslint/no-explicit-any */
 // import { Request, Response, NextFunction } from 'express';
 // import jwt from 'jsonwebtoken';
-
 // export interface AuthRequest extends Request {
 //   user?: any;
 // }
-
 // export const authenticate = (
 //   req: AuthRequest,
 //   res: Response,
@@ -14,7 +12,6 @@
 // ) => {
 //   const authHeader = req.headers.authorization;
 //   if (!authHeader) return res.status(401).json({ message: 'Unauthorized: No token provided' });
-
 //   const token = authHeader.split(' ')[1];
 //   try {
 //     const decoded = jwt.verify(token, process.env.JWT_SECRET as string);
@@ -25,7 +22,6 @@
 //     return res.status(403).json({ message: 'Invalid or expired Token' });
 //   }
 // };
-
 // export const authorize = (roles: string[]) => {
 //   return (req: AuthRequest, res: Response, next: NextFunction) => {
 //     if (!roles.includes(req.user?.role)) {
@@ -34,5 +30,3 @@
 //     next();
 //   };
 // };
-
-
