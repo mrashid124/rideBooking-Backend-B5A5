@@ -21,9 +21,25 @@ const moduleRoutes = [
         route: ride_route_1.RideRoutes,
     },
     {
-        path: "/drivers",
+        path: "/driver",
         route: driver_route_1.DriverRoutes,
     },
+    //   {
+    //   path: "/stats",
+    //   route: StatsRoutes,
+    // },
+    // {
+    //   path: "/vehicle",
+    //   route: VehicleRoutes,
+    // },
+    // {
+    //   path: "/analytics",
+    //   route: AnalyticsRoutes,
+    // },
+    // {
+    //   path: "/sms",
+    //   route: SMSRoutes,
+    // },
 ];
 moduleRoutes.forEach((route) => {
     exports.router.use(route.path, route.route);

@@ -23,9 +23,25 @@ const moduleRoutes = [
     route: RideRoutes,
   },
   {
-    path: "/drivers",
+    path: "/driver",
     route: DriverRoutes,
   },
+  //   {
+  //   path: "/stats",
+  //   route: StatsRoutes,
+  // },
+  // {
+  //   path: "/vehicle",
+  //   route: VehicleRoutes,
+  // },
+  // {
+  //   path: "/analytics",
+  //   route: AnalyticsRoutes,
+  // },
+  // {
+  //   path: "/sms",
+  //   route: SMSRoutes,
+  // },
 ];
 
 moduleRoutes.forEach((route) => {

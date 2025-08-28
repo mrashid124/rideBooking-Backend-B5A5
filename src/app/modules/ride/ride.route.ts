@@ -18,7 +18,9 @@ router.post(
   RideController.requestRide
 );
 router.get("/", checkAuth(Role.ADMIN), RideController.getAllRides);
+
 router.get("/me", checkAuth(Role.RIDER), RideController.getRiderAllRides);
+
 router.get("/available", checkAuth(Role.DRIVER), RideController.ridesAvailable);
 router.get(
   "/completed",

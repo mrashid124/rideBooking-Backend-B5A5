@@ -22,6 +22,7 @@ const loadEnvVariables = () => {
         "PER_KM_RATE",
         "CANCEL_WINDOW_TIME",
         "GEO_LOCATION_API",
+        "FRONTEND_URL",
     ];
     requiredEnvVariables.forEach((key) => {
         if (!process.env[key]) {
@@ -46,6 +47,7 @@ const loadEnvVariables = () => {
         PER_KM_RATE: process.env.PER_KM_RATE,
         CANCEL_WINDOW_TIME: process.env.CANCEL_WINDOW_TIME,
         GEO_LOCATION_API: process.env.GEO_LOCATION_API,
+        FRONTEND_URL: process.env.FRONTEND_URL,
     };
 };
 exports.envVars = loadEnvVariables();

@@ -12,17 +12,69 @@ import cookieParser from "cookie-parser";
 import { router } from "./app/routes";
 import globalErrorHandler from "./app/middlewares/globalErrorHandler";
 import notFound from "./app/middlewares/notFound";
+import { envVars } from "./app/config/env";
 
 
 // dotenv.config();
 const app =express();
 
-app.use(cors());
+// app.use(cors());
 // app.use(cors({ origin: true, credentials: true }));
-app.use(express.json());
+
+// app.use(
+//   cors({
+//     origin: envVars.FRONTEND_URL,
+//     credentials: true,
+//   })
+// );
+
+// app.use(express.json());
+
+app.set("trust proxy", 1);
+
+
+
+const whitelist = [
+  envVars.FRONTEND_URL,              // e.g. "http://localhost:3001"
+  // "http://localhost:3001",
+  // "https://your-frontend.vercel.app" 
+  // production/previews
+].filter(Boolean);
+
+const corsOptions: cors.CorsOptions = {
+  origin(origin, cb) {
+
+    if (!origin) return cb(null, true);
+    if (whitelist.includes(origin)) return cb(null, true);
+    return cb(new Error(`Not allowed by CORS: ${origin}`));
+  },
+  credentials: true,
+  methods: ["GET","POST","PUT","PATCH","DELETE","OPTIONS"],
+  allowedHeaders: ["Content-Type","Authorization","X-Requested-With","Accept"],
+};
+
+app.use(cors(corsOptions));
+
+app.options("*", cors(corsOptions));
+
+
+// app.use(
+//   cors({
+//     origin: envVars.FRONTEND_URL,
+//     credentials: true,
+//     methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+//     allowedHeaders: ["Content-Type", "Authorization", "X-Requested-With", "Accept"],
+//   })
+// );
+
+app.use(express.json({ limit: '10mb' })); // For JSON bodies
+app.use(express.urlencoded({ extended: true, limit: '10mb' })); // For form data
+
 
 app.use(cookieParser());
-app.set("trust proxy", 1);
+
+
+
 
 // app.use('/api/auth', AuthRoutes);
 

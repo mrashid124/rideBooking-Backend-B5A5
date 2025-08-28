@@ -61,9 +61,20 @@ const blockedUser = (0, catchAsync_1.default)((req, res, next) => __awaiter(void
         data: result,
     });
 }));
+// const getMe = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
+//     const decodedToken = req.user as JwtPayload
+//     const result = await UserService.getMe(decodedToken.userId);
+//     sendResponse(res, {
+//         success: true,
+//         statusCode: httpStatus.OK,
+//         message: "Your Profile Retrieved Successfully",
+//         data: result.data
+//     })
+// })
 exports.UserController = {
     createUser,
     getAllRiders,
     updateUser,
     blockedUser,
+    // getMe,
 };

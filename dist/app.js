@@ -15,13 +15,50 @@ const cookie_parser_1 = __importDefault(require("cookie-parser"));
 const routes_1 = require("./app/routes");
 const globalErrorHandler_1 = __importDefault(require("./app/middlewares/globalErrorHandler"));
 const notFound_1 = __importDefault(require("./app/middlewares/notFound"));
+const env_1 = require("./app/config/env");
 // dotenv.config();
 const app = (0, express_1.default)();
-app.use((0, cors_1.default)());
+// app.use(cors());
 // app.use(cors({ origin: true, credentials: true }));
-app.use(express_1.default.json());
-app.use((0, cookie_parser_1.default)());
+// app.use(
+//   cors({
+//     origin: envVars.FRONTEND_URL,
+//     credentials: true,
+//   })
+// );
+// app.use(express.json());
 app.set("trust proxy", 1);
+const whitelist = [
+    env_1.envVars.FRONTEND_URL, // e.g. "http://localhost:3001"
+    // "http://localhost:3001",
+    // "https://your-frontend.vercel.app" 
+    // production/previews
+].filter(Boolean);
+const corsOptions = {
+    origin(origin, cb) {
+        if (!origin)
+            return cb(null, true);
+        if (whitelist.includes(origin))
+            return cb(null, true);
+        return cb(new Error(`Not allowed by CORS: ${origin}`));
+    },
+    credentials: true,
+    methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization", "X-Requested-With", "Accept"],
+};
+app.use((0, cors_1.default)(corsOptions));
+app.options("*", (0, cors_1.default)(corsOptions));
+// app.use(
+//   cors({
+//     origin: envVars.FRONTEND_URL,
+//     credentials: true,
+//     methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+//     allowedHeaders: ["Content-Type", "Authorization", "X-Requested-With", "Accept"],
+//   })
+// );
+app.use(express_1.default.json({ limit: '10mb' })); // For JSON bodies
+app.use(express_1.default.urlencoded({ extended: true, limit: '10mb' })); // For form data
+app.use((0, cookie_parser_1.default)());
 // app.use('/api/auth', AuthRoutes);
 app.use("/api/v1", routes_1.router);
 // app.use("/api/user", UserRoutes);

@@ -6,6 +6,7 @@ dotenv.config();
 interface EnvConfig {
   PORT: string;
   DB_URL: string;
+
   NODE_ENV: "development" | "production";
   ADMIN_EMAIL: string;
   ADMIN_PASSWORD: string;
@@ -20,6 +21,7 @@ interface EnvConfig {
   PER_KM_RATE: string;
   CANCEL_WINDOW_TIME: string;
   GEO_LOCATION_API: string;
+  FRONTEND_URL: string;
 }
 
 const loadEnvVariables = (): EnvConfig => {
@@ -38,6 +40,7 @@ const loadEnvVariables = (): EnvConfig => {
     "PER_KM_RATE",
     "CANCEL_WINDOW_TIME",
     "GEO_LOCATION_API",
+    "FRONTEND_URL",
   ];
   requiredEnvVariables.forEach((key) => {
     if (!process.env[key]) {
@@ -47,7 +50,7 @@ const loadEnvVariables = (): EnvConfig => {
   return {
     PORT: process.env.PORT as string,
     // DB_URL: process.env.DB_URL!,
-      DB_URL: process.env.DB_URL as string,
+    DB_URL: process.env.DB_URL as string,
     NODE_ENV: process.env.NODE_ENV as "development" | "production",
     BCRYPT_SALT_ROUND: process.env.BCRYPT_SALT_ROUND as string,
     JWT: {
@@ -62,6 +65,7 @@ const loadEnvVariables = (): EnvConfig => {
     PER_KM_RATE: process.env.PER_KM_RATE as string,
     CANCEL_WINDOW_TIME: process.env.CANCEL_WINDOW_TIME as string,
     GEO_LOCATION_API: process.env.GEO_LOCATION_API as string,
+    FRONTEND_URL: process.env.FRONTEND_URL as string,
   };
 };
 
