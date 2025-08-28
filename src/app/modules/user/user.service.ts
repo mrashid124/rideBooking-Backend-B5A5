@@ -1,11 +1,13 @@
 import bcryptjs from "bcryptjs";
-
 import httpStatus from "http-status-codes";
 import { JwtPayload } from "jsonwebtoken";
 import { envVars } from "../../config/env";
 import AppError from "../../errorHelpers/appError";
 import { ActiveStatus, IUser, Role } from "./user.interface";
 import { User } from "./user.model";
+// 
+
+
 
 
 
@@ -28,6 +30,10 @@ const createUser = async (payload: IUser) => {
     ...rest,
   });
   return user;
+
+    // Role checking
+
+
 };
 
 const getAllRiders = async () => {

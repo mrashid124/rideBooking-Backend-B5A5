@@ -26,8 +26,10 @@ const userSchema = new mongoose_1.Schema({
     password: { type: String, required: true },
     role: {
         type: String,
-        enum: Object.values(user_interface_1.Role),
-        default: user_interface_1.Role.RIDER,
+        // enum: Object.values(Role),
+        enum: Object.values([user_interface_1.Role.RIDER, user_interface_1.Role.DRIVER]),
+        // default: Role.RIDER,
+        required: true,
     },
     phone: {
         type: String,
@@ -49,6 +51,7 @@ const userSchema = new mongoose_1.Schema({
     },
     driver: { type: mongoose_1.Schema.Types.ObjectId, ref: "Driver" },
 }, { timestamps: true, versionKey: false });
+// rider to driver role change hook
 userSchema.post("findOneAndUpdate", function (doc, next) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
@@ -67,9 +70,12 @@ userSchema.post("findOneAndUpdate", function (doc, next) {
         }
     });
 });
+//  driver to rider role change hook
 userSchema.post("findOneAndUpdate", function (doc, next) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
+            if (!doc)
+                return next(); // added
             if ((doc === null || doc === void 0 ? void 0 : doc.role) === user_interface_1.Role.ADMIN) {
                 yield driver_model_1.Driver.findOneAndDelete({
                     user: doc._id,

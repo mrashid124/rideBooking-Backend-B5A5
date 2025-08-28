@@ -17,8 +17,11 @@ const userSchema = new Schema<IUser>(
     password: { type: String, required: true },
     role: {
       type: String,
-      enum: Object.values(Role),
-      default: Role.RIDER,
+      // enum: Object.values(Role),
+      enum: Object.values([Role.RIDER, Role.DRIVER]),
+      // default: Role.RIDER,
+      required: true,
+
     },
     phone: {
       type: String,
@@ -43,7 +46,7 @@ const userSchema = new Schema<IUser>(
   { timestamps: true, versionKey: false }
 );
 
-
+// rider to driver role change hook
 userSchema.post("findOneAndUpdate", async function (doc, next) {
   try {
     if (doc?.role === Role.DRIVER) {
@@ -62,9 +65,11 @@ userSchema.post("findOneAndUpdate", async function (doc, next) {
   }
 });
 
-
+//  driver to rider role change hook
 userSchema.post("findOneAndUpdate", async function (doc, next) {
   try {
+    if (!doc) return next();   // added
+
     if (doc?.role === Role.ADMIN) {
       await Driver.findOneAndDelete({
         user: doc._id,

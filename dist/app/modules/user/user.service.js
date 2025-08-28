@@ -30,6 +30,7 @@ const env_1 = require("../../config/env");
 const appError_1 = __importDefault(require("../../errorHelpers/appError"));
 const user_interface_1 = require("./user.interface");
 const user_model_1 = require("./user.model");
+// 
 const createUser = (payload) => __awaiter(void 0, void 0, void 0, function* () {
     const { email, password } = payload, rest = __rest(payload, ["email", "password"]);
     const isUserExist = yield user_model_1.User.findOne({ email });
@@ -39,6 +40,7 @@ const createUser = (payload) => __awaiter(void 0, void 0, void 0, function* () {
     const hashedPassword = yield bcryptjs_1.default.hash(password, Number(env_1.envVars.BCRYPT_SALT_ROUND));
     const user = yield user_model_1.User.create(Object.assign({ email, password: hashedPassword }, rest));
     return user;
+    // Role checking
 });
 const getAllRiders = () => __awaiter(void 0, void 0, void 0, function* () {
     const users = yield user_model_1.User.find({ role: user_interface_1.Role.RIDER });
