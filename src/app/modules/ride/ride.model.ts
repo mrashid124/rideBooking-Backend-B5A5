@@ -30,7 +30,13 @@ const rideSchema = new Schema<IRide>(
 
     pickupLocation: { type: locationSchema, required: true, _id: false },
     destinationLocation: { type: locationSchema, required: true, _id: false },
-
+    // 
+         paymentMethod: {
+      type: String,
+      enum: Object.keys(PaymentMethodStatus),
+      required: true,
+    },
+    // 
     fare: { type: Number },
 
     status: {
@@ -46,7 +52,7 @@ const rideSchema = new Schema<IRide>(
   }
 );
 
-
+// default history
 rideSchema.pre("save", function (next) {
   if (this.isNew && (!this.history || this.history.length === 0)) {
     this.history = [
@@ -59,7 +65,7 @@ rideSchema.pre("save", function (next) {
   next();
 });
 
-
+// Fare
 rideSchema.pre("save", async function (next) {
   try {
     const ride = this as IRide;
@@ -69,14 +75,14 @@ rideSchema.pre("save", async function (next) {
       ride.pickupLocation.address &&
       ride.destinationLocation.address
     ) {
-   
+       //  pickup coordinates
       const pickupCoords = await coordinatesFromAddress(
         ride.pickupLocation.address
       );
       ride.pickupLocation.lat = pickupCoords.lat;
       ride.pickupLocation.lng = pickupCoords.lng;
 
-      // Get destination coordinates
+      //  destination coordinates
       const destinationCoords = await coordinatesFromAddress(
         ride.destinationLocation.address
       );
@@ -90,7 +96,7 @@ rideSchema.pre("save", async function (next) {
     }
 
     next();
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+ 
   } catch (error: any) {
     next(error);
   }
