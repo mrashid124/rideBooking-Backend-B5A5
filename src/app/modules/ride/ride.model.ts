@@ -3,7 +3,7 @@ import { Schema, model } from "mongoose";
 import { envVars } from "../../config/env";
 import { distanceByKilo } from "../../utils/distanceByKilo";
 import { coordinatesFromAddress } from "../../utils/addressCoordinates";
-import { IRide, RideStatus } from "./ride.interface";
+import { IRide, PaymentMethodStatus, RideStatus } from "./ride.interface";
 
 
 const locationSchema = {

@@ -4,8 +4,9 @@ import httpStatus from "http-status-codes";
 import catchAsync from "../../utils/catchAsync";
 import sendResponse from "../../utils/sendResponse";
 
-import { AvailabilityStatus } from "./driver.interface";
+import { ApprovedStatus, AvailabilityStatus } from "./driver.interface";
 import { DriverService } from "./driver.service";
+import { JwtPayload } from "jsonwebtoken";
 
 const acceptRide = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
@@ -80,19 +81,55 @@ const setAvailability = catchAsync(
 
     const result = await DriverService.setAvailability(driverId);
 
+    // sendResponse(res, {
+    //   statusCode: httpStatus.OK,
+    //   success: true,
+    //   message: `Availability updated to ${
+    //     result.isAvailable === AvailabilityStatus.AVAILABLE
+    //       ? "Online"
+    //       : "Offline"
+    //   }`,
+    //   data: result,
+    // });
     sendResponse(res, {
       statusCode: httpStatus.OK,
       success: true,
-      message: `Availability updated to ${
-        result.isAvailable === AvailabilityStatus.AVAILABLE
-          ? "Online"
-          : "Offline"
-      }`,
+      message: `You are now ${result.isAvailable ? "Online" : "Offline"}`,
       data: result,
     });
   }
 );
 
+// const getAllDrivers = catchAsync(
+//   async (_req: Request, res: Response, next: NextFunction) => {
+//     const result = await DriverService.getAllDrivers();
+
+//     sendResponse(res, {
+//       statusCode: httpStatus.OK,
+//       success: true,
+//       message: "Drivers retrieved successfully!",
+//       data: {
+//         drivers: result.data,
+//         meta: result.meta,
+//       },
+//     });
+//   }
+// );
+
+const getSingleDriver = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const decodedToken = req.user as JwtPayload;
+    const result = await DriverService.getSingleDriver(decodedToken.userId);
+
+    sendResponse(res, {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: "Your Profile Retrieved Successfully!",
+      data: result.data,
+    });
+  }
+);
+// 
 const getAllDrivers = catchAsync(
   async (_req: Request, res: Response, next: NextFunction) => {
     const result = await DriverService.getAllDrivers();
@@ -100,11 +137,31 @@ const getAllDrivers = catchAsync(
     sendResponse(res, {
       statusCode: httpStatus.OK,
       success: true,
-      message: "Drivers retrieved successfully!",
+      message: "All Drivers Retrieved Successfully!",
       data: {
         drivers: result.data,
         meta: result.meta,
       },
+    });
+  }
+);
+// 
+const getAllDriversInfo = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const { page, limit, search, status } = req.query;
+
+    const drivers = await DriverService.getAllDriversInfo({
+      page: Number(page) || 1,
+      limit: Number(limit) || 5,
+      search: search as string,
+      status: status as ApprovedStatus,
+    });
+
+    sendResponse(res, {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: "All Drivers Retrieved Successfully!",
+      data: drivers,
     });
   }
 );
@@ -162,4 +219,7 @@ export const DriverController = {
   approveDriver,
   suspendDriver,
   availableDriver,
+
+  getSingleDriver,
+  getAllDriversInfo,
 };

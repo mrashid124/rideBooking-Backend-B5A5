@@ -13,7 +13,6 @@ const globalErrorHandler = (
   err: any,
   _req: Request,
   res: Response,
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   next: NextFunction
 ) => {
   let errorSources: TErrorSources[] = [];

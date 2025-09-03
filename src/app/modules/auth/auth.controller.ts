@@ -8,6 +8,7 @@ import catchAsync from "../../utils/catchAsync";
 import sendResponse from "../../utils/sendResponse";
 import { setAuthCookie } from "../../utils/setCookie";
 import { AuthServices } from "./auth.service";
+import { JwtPayload } from "jsonwebtoken";
 
 
 const credentialsLogin = catchAsync(
@@ -51,13 +52,13 @@ const logout = catchAsync(
     res.clearCookie("accessToken", {
       httpOnly: true,
       secure: false,
-      sameSite: "lax",
-    });
+      sameSite: "none",
+    })
 
     res.clearCookie("refreshToken", {
       httpOnly: true,
       secure: false,
-      sameSite: "lax",
+      sameSite: "none",
     });
 
     sendResponse(res, {
@@ -68,11 +69,34 @@ const logout = catchAsync(
     });
   }
 );
+// 
+const changePassword = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const oldPassword = req.body.oldPassword;
+    const newPassword = req.body.newPassword;
+    const confirmPassword = req.body.confirmPassword;
+    const decodedToken = req.user;
 
+    await AuthServices.changePassword(
+      oldPassword,
+      newPassword,
+      confirmPassword,
+      decodedToken as JwtPayload
+    );
+
+    sendResponse(res, {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: "Password Changed Successfully!",
+      data: null,
+    });
+  }
+);
 export const AuthControllers = {
   credentialsLogin,
   getNewAccessToken,
   logout,
+  changePassword,
 };
 
 

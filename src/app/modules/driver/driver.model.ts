@@ -1,8 +1,10 @@
 import { Schema, model } from "mongoose";
-import { searchGeoLocation } from "../../utils/searchGeoLocation";
+// import { searchGeoLocation } from "../../utils/searchGeoLocation";
 
-import { ApprovedStatus, AvailabilityStatus } from "./driver.interface";
+import { ApprovedStatus} from "./driver.interface";
 import { vehicleSchema } from "../vehicle/vehicle.model";
+import { getGeoLocation } from "../../utils/getGeoLocation";
+
 
 const locationSchema = new Schema(
   {
@@ -10,16 +12,17 @@ const locationSchema = new Schema(
     lat: { type: Number, default: 0 },
     lng: { type: Number, default: 0 },
   },
-  { _id: false }
-);
+  { _id: false });
 
 const driverSchema = new Schema(
   {
     user: { type: Schema.Types.ObjectId, ref: "User", required: true },
     isAvailable: {
-      type: String,
-      enum: Object.keys(AvailabilityStatus),
-      default: AvailabilityStatus.AVAILABLE,
+      // type: String,
+      // enum: Object.keys(AvailabilityStatus),
+      // default: AvailabilityStatus.AVAILABLE,
+      type: Boolean,
+      default: false,
     },
     isApprovedStatus: {
       type: String,
@@ -37,19 +40,19 @@ const driverSchema = new Schema(
   { timestamps: true, versionKey: false }
 );
 
-
+// default location for driver
 driverSchema.pre("save", async function (next) {
   try {
     if (
       this.isModified("isApprovedStatus") &&
       this.isApprovedStatus === "APPROVED"
     ) {
-      const { location, lat, lng } = await searchGeoLocation();
+      const { location, lat, lng } = await getGeoLocation();
       this.currentLocation = { location, lat, lng };
     }
 
     next();
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+
   } catch (error: any) {
     next(error);
   }
